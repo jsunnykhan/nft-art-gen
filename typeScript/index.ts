@@ -40,7 +40,6 @@ const createCombinationMetaData = () => {
         createCombinationMetaData();
     } else {
         const name: string = getRandomName();
-
         takenFaces[characterCode] = characterCode;
 
         const finalTemplate = template

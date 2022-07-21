@@ -18,7 +18,8 @@ const randInteger = (maxRange) => {
 };
 exports.randInteger = randInteger;
 const randElement = (array) => {
-    return [Math.floor(Math.random() * array.length)];
+    const a = array[Math.floor(Math.random() * array.length)];
+    return a;
 };
 exports.randElement = randElement;
 const findFileLength = (folderName) => {

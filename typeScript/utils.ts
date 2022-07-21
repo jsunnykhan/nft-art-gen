@@ -11,8 +11,9 @@ export const randInteger = (maxRange: number): number => {
     return Math.floor(Math.random() * (maxRange));
 }
 
-export const randElement = (array: string[]): Array<number> => {
-    return [Math.floor(Math.random() * array.length)]
+export const randElement = (array: Array<string>): string => {
+    const a = array[Math.floor(Math.random() * array.length)];
+    return a;
 }
 
 export const findFileLength = (folderName: string) => {
