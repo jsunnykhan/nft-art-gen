@@ -9,17 +9,31 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getRandomName = exports.svgToPng = exports.getLayer = exports.randElement = exports.randInteger = void 0;
+exports.getRandomName = exports.svgToPng = exports.getLayer = exports.findCombination = exports.findFileLength = exports.randElement = exports.randInteger = void 0;
+const fs_1 = require("fs");
 const sharp = require('sharp');
 const { readFileSync, } = require('fs');
 const randInteger = (maxRange) => {
-    return Math.floor(Math.random() * (maxRange + 1));
+    return Math.floor(Math.random() * (maxRange));
 };
 exports.randInteger = randInteger;
 const randElement = (array) => {
     return [Math.floor(Math.random() * array.length)];
 };
 exports.randElement = randElement;
+const findFileLength = (folderName) => {
+    const folder = (0, fs_1.readdirSync)(`./layers/${folderName}`);
+    return folder.length;
+};
+exports.findFileLength = findFileLength;
+const findCombination = () => {
+    const com = (0, fs_1.readdirSync)('./layers');
+    const file = com.map(f => (0, fs_1.readdirSync)(`./layers/${f}`));
+    const index = file.map((folder) => folder.length);
+    const combination = index.reduce((pre, cur) => pre * cur, 1);
+    return combination;
+};
+exports.findCombination = findCombination;
 const getLayer = (fileName, folderName, skip = 0.0) => {
     const svg = readFileSync(`./layers/${folderName}/${fileName}.svg`, "utf-8");
     const re = /(?<=\<svg\s*[^>]*>)([\s\S]*?)(?=\<\/svg\>)/g;
@@ -30,9 +44,9 @@ exports.getLayer = getLayer;
 const svgToPng = (fileName) => __awaiter(void 0, void 0, void 0, function* () {
     const src = `./out/${fileName}.svg`;
     const dest = `./out/${fileName}.png`;
-    const img = yield sharp(src);
-    const resizeImage = yield img.resize(1024);
-    yield resizeImage.toFile(dest);
+    const img = sharp(src);
+    const resizeImage = img.resize(1024);
+    resizeImage.toFile(dest);
 });
 exports.svgToPng = svgToPng;
 const takenNames = {};

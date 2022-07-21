@@ -1,6 +1,6 @@
 
 import { existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from "fs";
-import { randInteger, getLayer, svgToPng, getRandomName } from "./utils";
+import { randInteger, getLayer, svgToPng, getRandomName, findCombination, findFileLength } from "./utils";
 
 
 const template: string = `
@@ -16,10 +16,7 @@ const template: string = `
 const takenFaces: any = {};
 
 let fileIndex: number = 0;
-const combination: number = 14;
-
-
-
+const combination = findCombination();
 
 const characterExists = (characterCode: string): boolean => {
     if (takenFaces[characterCode]) {
@@ -31,10 +28,10 @@ const characterExists = (characterCode: string): boolean => {
 }
 
 const createCombinationMetaData = () => {
-    const body: number = 0;
-    const face: number = randInteger(6);
-    const hand: number = randInteger(1);
-    const handLeft: number = 0;
+    const body: number = randInteger(findFileLength('body'));
+    const face: number = randInteger(findFileLength('face'));
+    const hand: number = randInteger(findFileLength('hand'));
+    const handLeft: number = randInteger(findFileLength('handLeft'));
 
 
     const characterCode: string = [body, face, hand, handLeft].join('');
@@ -79,4 +76,5 @@ readdirSync("./out").forEach((f) => rmSync(`./out/${f}`));
 
 while (Object.keys(takenFaces).length !== combination) {
     createCombinationMetaData();
+
 }

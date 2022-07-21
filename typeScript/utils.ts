@@ -1,3 +1,4 @@
+import { readdirSync } from 'fs';
 const sharp = require('sharp');
 
 const {
@@ -7,13 +8,25 @@ const {
 
 
 export const randInteger = (maxRange: number): number => {
-    return Math.floor(Math.random() * (maxRange + 1));
+    return Math.floor(Math.random() * (maxRange));
 }
 
 export const randElement = (array: string[]): Array<number> => {
     return [Math.floor(Math.random() * array.length)]
 }
 
+export const findFileLength = (folderName: string) => {
+    const folder = readdirSync(`./layers/${folderName}`);
+    return folder.length
+}
+
+export const findCombination = (): number => {
+    const com = readdirSync('./layers');
+    const file: any[] = com.map(f => readdirSync(`./layers/${f}`));
+    const index = file.map((folder: any[]) => folder.length);
+    const combination = index.reduce((pre, cur) => pre * cur, 1)
+    return combination;
+}
 
 
 export const getLayer = (fileName: string, folderName: string, skip: number = 0.0): string => {
@@ -29,9 +42,9 @@ export const svgToPng = async (fileName: number) => {
     const src: string = `./out/${fileName}.svg`;
     const dest: string = `./out/${fileName}.png`;
 
-    const img = await sharp(src);
-    const resizeImage = await img.resize(1024)
-    await resizeImage.toFile(dest);
+    const img = sharp(src);
+    const resizeImage = img.resize(1024)
+    resizeImage.toFile(dest);
 }
 
 const takenNames: any = {}
@@ -57,3 +70,5 @@ export const getRandomName = (): string => {
         return name;
     }
 }
+
+

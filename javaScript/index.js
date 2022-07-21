@@ -12,7 +12,7 @@ const template = `
 `;
 const takenFaces = {};
 let fileIndex = 0;
-const combination = 14;
+const combination = (0, utils_1.findCombination)();
 const characterExists = (characterCode) => {
     if (takenFaces[characterCode]) {
         return true;
@@ -22,10 +22,10 @@ const characterExists = (characterCode) => {
     }
 };
 const createCombinationMetaData = () => {
-    const body = 0;
-    const face = (0, utils_1.randInteger)(6);
-    const hand = (0, utils_1.randInteger)(1);
-    const handLeft = 0;
+    const body = (0, utils_1.randInteger)((0, utils_1.findFileLength)('body'));
+    const face = (0, utils_1.randInteger)((0, utils_1.findFileLength)('face'));
+    const hand = (0, utils_1.randInteger)((0, utils_1.findFileLength)('hand'));
+    const handLeft = (0, utils_1.randInteger)((0, utils_1.findFileLength)('handLeft'));
     const characterCode = [body, face, hand, handLeft].join('');
     if (characterExists(characterCode)) {
         createCombinationMetaData();
